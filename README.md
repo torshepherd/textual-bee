@@ -1,6 +1,6 @@
 # textual-bee
 
-<!-- <img align="center" alt="Preview" width="50%" src="preview.png" /> -->
+<img align="center" alt="Preview" width="50%" src="preview.png" />
 
 ![preview](preview.png)
 
