@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "textual-bee"
-version = "0.8.0"
+version = "1.0.0"
 description = ""
 authors = ["torshepherd <tor.aksel.shepherd@gmail.com>"]
 readme = "README.md"
