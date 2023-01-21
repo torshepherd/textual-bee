@@ -3,7 +3,9 @@ from __future__ import annotations
 import itertools
 import random
 from functools import partial
-from typing import List, Literal, Tuple
+import string
+from typing import List, Literal, Optional, Tuple
+import click
 
 from rich import color as rich_color
 from textual import events
@@ -122,6 +124,8 @@ class BeeApp(App):
     target_page = var(0)
     current_page = var(0.0)
 
+    starting_letters: None | str = None
+
     @property
     def recent_words_open(self):
         return self.query_one("#recent-words", Button).has_class("full-recent-words")
@@ -138,7 +142,7 @@ class BeeApp(App):
         for e in self.query(Button).results():
             e.can_focus = False
             e.ACTIVE_EFFECT_DURATION = 0.1  # type: ignore
-        self.action_reset_game()
+        self.action_reset_game(self.starting_letters)
 
     def compose(self) -> ComposeResult:
         """Add our buttons."""
@@ -154,8 +158,12 @@ class BeeApp(App):
             id="main",
         )
 
-    def action_reset_game(self):
-        self.center_letter, self.outer_letters = randomize_letters()
+    def action_reset_game(self, letters: Optional[str] = None):
+        if letters is None:
+            self.center_letter, self.outer_letters = randomize_letters()
+        else:
+            self.center_letter = letters[0]
+            self.outer_letters = [letter for letter in letters[1:]]
 
         self.scorebook = get_words_with_letters(
             required=self.center_letter,
@@ -548,9 +556,44 @@ class BeeApp(App):
         )
 
 
-def run_app():
-    app = BeeApp()
-    app.run()
+def validate_letters(ctx, param, value):
+    if value is None or (
+        isinstance(value, str)
+        and len(value) == 7
+        and all((letter.lower() in string.ascii_lowercase for letter in value))
+    ):
+        return value
+    raise click.BadParameter("Must be 7 letters")
+
+
+@click.command()
+@click.option(
+    "--letters",
+    default=None,
+    type=click.UNPROCESSED,
+    callback=validate_letters,
+    help="The letters to use for the board. "
+    "The first letter will be the center letter. "
+    "Leave blank to generate randomly.",
+)
+@click.option(
+    "--answers",
+    is_flag=True,
+    help="Don't run the game, just print out "
+    "the answers to the set of letters provided by --letters.",
+)
+def run_app(letters: Optional[str], answers: bool):
+    if answers:
+        if letters is None:
+            raise click.BadParameter("Answers must include --letters as well.")
+        from rich import print
+
+        print(get_words_with_letters(letters[0], letters[1:], 4))
+
+    else:
+        app = BeeApp()
+        app.starting_letters = letters
+        app.run()
 
 
 if __name__ == "__main__":
