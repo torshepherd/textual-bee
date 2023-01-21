@@ -125,6 +125,7 @@ class BeeApp(App):
     current_page = var(0.0)
 
     starting_letters: None | str = None
+    simplified = False
 
     @property
     def recent_words_open(self):
@@ -142,6 +143,8 @@ class BeeApp(App):
         for e in self.query(Button).results():
             e.can_focus = False
             e.ACTIVE_EFFECT_DURATION = 0.1  # type: ignore
+            if not self.simplified:
+                e.add_class("fancy")
         self.action_reset_game(self.starting_letters)
 
     def compose(self) -> ComposeResult:
@@ -582,7 +585,12 @@ def validate_letters(ctx, param, value):
     help="Don't run the game, just print out "
     "the answers to the set of letters provided by --letters.",
 )
-def run_app(letters: Optional[str], answers: bool):
+@click.option(
+    "--simplified",
+    is_flag=True,
+    help="Run the game with simplified graphics (for asciinema, for example)",
+)
+def run_app(letters: Optional[str], answers: bool, simplified: bool):
     if answers:
         if letters is None:
             raise click.BadParameter("Answers must include --letters as well.")
@@ -593,6 +601,7 @@ def run_app(letters: Optional[str], answers: bool):
     else:
         app = BeeApp()
         app.starting_letters = letters
+        app.simplified = simplified
         app.run()
 
 

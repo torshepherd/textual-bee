@@ -193,13 +193,15 @@ Button:focus {
 .hive-inner.-active {
   background: #f3da25;
   tint: #d9d9d9 0%;
+}
+
+.fancy.-active {
   border: hkey white;
 }
 
 .hive-outer.-active {
   background: #d9d9d9;
   tint: #d9d9d9 0%;
-  border: hkey white;
 }
 
 /* Controls */

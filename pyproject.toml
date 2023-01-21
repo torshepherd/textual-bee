@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "textual-bee"
-version = "1.1.0"
+version = "1.2.0"
 description = "A Spelling Bee game for your terminal!"
 authors = ["torshepherd <tor.aksel.shepherd@gmail.com>"]
 readme = "README.md"
