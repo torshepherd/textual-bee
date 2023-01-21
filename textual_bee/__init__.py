@@ -22,13 +22,13 @@ from .words_utils import (
 )
 
 
-def rich_underline(s):
+def rich_highlight(s):
     return f"[on #f3da25]{s}[/on #f3da25]"
 
 
 def style_if_pangram(w: str):
     if pangram(w):
-        return rich_underline(w)
+        return rich_highlight(w)
     return w
 
 
@@ -96,9 +96,9 @@ class BeeApp(App):
     BINDINGS = [
         ("ctrl+c", "quit", "Quit"),
         ("ctrl+r", "reset_game", "Reset"),
-        ("tab", "open_found_words", "Found words"),
+        ("tab", "null", "Found words"),
         ("spacebar", "action_shuffle_letters", "Shuffle"),
-        ("→", "action_null", "Next page (found words)"),
+        ("→", "null", "Next page (found words)"),
     ]
 
     # Animation variables
@@ -170,10 +170,6 @@ class BeeApp(App):
         self.query_one("#main").styles.display = "none"
         self.query_one("#splash").styles.display = "block"
         self.splash_opacity = 1.0
-
-    def action_open_found_words(self):
-        if self.main_visible:
-            self.query_one("#recent-words", Button).press()
 
     def action_shuffle_letters(self):
         shuffled = [letter.upper() for letter in self.outer_letters]
@@ -292,7 +288,7 @@ class BeeApp(App):
 
             if pangram(already_found_words[0]):
                 before, after = current_tape.split(" ", maxsplit=1)
-                before = rich_underline(before)
+                before = rich_highlight(before)
                 current_tape = before + " " + after
 
             self.query_one("#recent-words", Button).label = (
@@ -457,6 +453,8 @@ class BeeApp(App):
     def on_key(self, event: events.Key) -> None:
         """Called when the user presses a key."""
         if self.main_visible:
+            if event.key == "tab":
+                self.query_one("#recent-words", Button).press()
             if not self.recent_words_open:
                 if event.key in [
                     self.center_letter.lower(),

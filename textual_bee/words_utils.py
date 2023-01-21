@@ -1,10 +1,10 @@
+import json
+import pathlib
 import random
 import string
 import timeit
 from functools import lru_cache, partial
 from typing import Dict, List, Tuple
-
-import httpx
 
 VOWELS = "aeiou"
 CONSONANTS = [letter for letter in string.ascii_lowercase if letter not in VOWELS]
@@ -41,16 +41,10 @@ def randomize_letters() -> Tuple[str, List[str]]:
 
 @lru_cache()
 def get_popular_words() -> List[str]:
-    return (
-        httpx.get(
-            # # Not a full list:
-            # "https://raw.githubusercontent.com/dolph/dictionary/master/popular.txt"
-            # # Still not a full list, but better at least:
-            "https://raw.githubusercontent.com/lzha97/spelling_bee/master/words.json"
-        )
-        .json()
-        .keys()
-    )
+    # Borrowed from
+    # https://raw.githubusercontent.com/lzha97/spelling_bee/master/words.json
+    with open(pathlib.Path(__file__).parent / "word_list.json", "r") as jsonfile:
+        return json.load(jsonfile)
 
 
 def pangram(s):

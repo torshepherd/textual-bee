@@ -1,8 +1,6 @@
 # textual-bee
 
-<img align="center" alt="Preview" width="50%" src="preview.png" />
-
-![preview](preview.png)
+![preview](https://raw.githubusercontent.com/torshepherd/textual-bee/main/preview.png)
 
 Get it on PyPI:
 

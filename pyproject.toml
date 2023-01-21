@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "textual-bee"
-version = "0.1.0"
+version = "0.8.0"
 description = ""
 authors = ["torshepherd <tor.aksel.shepherd@gmail.com>"]
 readme = "README.md"
@@ -8,8 +8,7 @@ packages = [{ include = "textual_bee" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pydantic = "^1.10.4"
-httpx = "^0.23.3"
+textual = { version = "^0.9.1" }
 
 [tool.poetry.scripts]
 textual-bee = "textual_bee:run_app"

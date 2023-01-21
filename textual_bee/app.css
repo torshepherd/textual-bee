@@ -150,16 +150,13 @@ BeeBoard {
   grid-columns: 1fr;
   grid-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
   margin: 1 20;
-  min-height: 9;
+  height: 9;
   width: 21;
 }
 
 Button {
   border: hidden white;
 }
-/* 'ascii', 'blank', 'dashed', 'double', 'heavy', 'hidden',
-   │   'hkey', 'inner', 'none', 'outer', 'round', 'solid',
-   │   'tall', 'vkey', or 'wide' */
 
 Button.-active {
   tint: #d9d9d9 30%;
@@ -175,6 +172,7 @@ Button:focus {
   height: 100%;
   border: none;
   background: #fff;
+  visibility: hidden;
 }
 
 .hive-inner {
