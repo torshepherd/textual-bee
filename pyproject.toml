@@ -2,9 +2,11 @@
 name = "textual-bee"
 version = "1.4.0"
 description = "A Spelling Bee game for your terminal!"
+license = "MIT"
 authors = ["torshepherd <tor.aksel.shepherd@gmail.com>"]
 readme = "README.md"
 packages = [{ include = "textual_bee" }]
+repository = "https://github.com/torshepherd/textual-bee"
 
 [tool.poetry.dependencies]
 python = "^3.9"
